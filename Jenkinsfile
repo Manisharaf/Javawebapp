@@ -66,7 +66,7 @@ pipeline {
                         -Dsonar.projectName=${projectName} \
                         -Dsonar.projectVersion=${projectVersion} \
                         -Dsonar.sources=${sonarSources} \
-                        -Dsonar.language=${sonarLanguage} \ 
+                        -Dsonar.language=${sonarLanguage} \
                         -Dsonar.java.binaries=${sonarBinaries} \
                         ${sonarCoverageformat}=${coverageReportsPath} \ 
                         -Dsonar.c.file.suffixes=- \ 
