@@ -2,15 +2,15 @@ pipeline {
 
     // run on jenkins nodes tha has slave label .....
 
-    agent { label 'slaves' }
+    agent { label 'maven' }
 
     // global env variables
 
-    environment {
+    /* environment {
 
         EMAIL_RECIPIENTS = 'akshay.kg@bt.com'
 
-    }
+    }*/
     
     stages {
         
@@ -38,7 +38,7 @@ pipeline {
            }
         }
         
-        stage('Code Quality Check (Sonarqube)')
+        /* stage('Code Quality Check (Sonarqube)')
         {
           steps
           {
@@ -55,9 +55,9 @@ pipeline {
                 }
              }
           }
-        }
+        }*/
         
-        stage('Quality gate') {
+        /* stage('Quality gate') {
 
             steps {
 
@@ -83,16 +83,16 @@ pipeline {
 
             }
 
-        }
+        }*/
 
-        stage('Upload to Nexus') {
+        /* stage('Upload to Nexus') {
             steps {
                 // Deploy to Nexus
                nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'EED_Engg-Excellence-Devops-POC_maven_releases', packages: []
             }
-        }
+        }*/
     }
-        post('Send Email') {
+        /* post('Send Email') {
         failure {
             script {
                 mail (to: 'wasim.3.akram@bt.com',
@@ -111,5 +111,5 @@ pipeline {
                   );
                 }
             }      
-         }
+         }*/
     }
