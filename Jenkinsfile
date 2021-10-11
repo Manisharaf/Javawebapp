@@ -68,9 +68,9 @@ pipeline {
                         -Dsonar.sources=${sonarSources} \
                         -Dsonar.language=${sonarLanguage} \
                         -Dsonar.java.binaries=${sonarBinaries} \
-                        ${sonarCoverageformat}=${coverageReportsPath} \ 
-                        -Dsonar.c.file.suffixes=- \ 
-                        -Dsonar.cpp.file.suffixes=- \ 
+                        ${sonarCoverageformat}=${coverageReportsPath} \
+                        -Dsonar.c.file.suffixes=- \
+                        -Dsonar.cpp.file.suffixes=- \
                         -Dsonar.objc.file.suffixes=- \
                         -Dsonar.sourceEncoding=${sonarSourceEncoding} 
                         
