@@ -62,17 +62,18 @@ pipeline {
                
                     // some block
                     sh """
-                    ${sonarscanner}/bin/sonar-scanner -Dsonar.projectKey=${projectKey} \ 
-                    -Dsonar.projectName=${projectName} \ 
-                    -Dsonar.projectVersion=${projectVersion} \
-                    -Dsonar.sources=${sonarSources} \
-                    -Dsonar.language=${sonarLanguage} \ 
-                    -Dsonar.java.binaries=${sonarBinaries} \
-                    ${sonarCoverageformat}=${coverageReportsPath}\ 
-                    -Dsonar.c.file.suffixes=- \ 
-                    -Dsonar.cpp.file.suffixes=- \ 
-                    -Dsonar.objc.file.suffixes=- \
-                    -Dsonar.sourceEncoding=${sonarSourceEncoding} 
+                    ${sonarscanner}/bin/sonar-scanner -Dsonar.projectKey=${projectKey} \
+                        -Dsonar.projectName=${projectName} \
+                        -Dsonar.projectVersion=${projectVersion} \
+                        -Dsonar.sources=${sonarSources} \
+                        -Dsonar.language=${sonarLanguage} \ 
+                        -Dsonar.java.binaries=${sonarBinaries} \
+                        ${sonarCoverageformat}=${coverageReportsPath} \ 
+                        -Dsonar.c.file.suffixes=- \ 
+                        -Dsonar.cpp.file.suffixes=- \ 
+                        -Dsonar.objc.file.suffixes=- \
+                        -Dsonar.sourceEncoding=${sonarSourceEncoding} 
+                        
                     """
                 }
              }
