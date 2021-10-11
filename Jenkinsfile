@@ -38,24 +38,46 @@ pipeline {
            }
         }
         
-        /* stage('Code Quality Check (Sonarqube)')
+        stage('Code Quality Check (Sonarqube)')
         {
+            environment {
+                projectKey = 'Javawebapp'
+                projectName = 'Javawebapp'
+                projectVersion = '1.1'
+                sonarSources = 'src'
+                \\sonarExclusions = ''
+                sonarLanguage = 'java'
+                sonarBinaries = 'target/classes'
+                sonarCoverageformat = '-Dsonar.coverage.jacoco.xmlReportPaths'
+                coverageReportsPath = 'target/jacoco.xml'
+                sonarSourceEncoding = 'UTF-8'
+                // coverage.exclusions = ''                                     
+            }
           steps
           {
              script
              {
                def sonarscanner = tool 'sonar_scanner'
-               withSonarQubeEnv(credentialsId: '0a89166b-802d-44f9-9d0b-259358ef079b') {
+               withSonarQubeEnv('sonarqube') {
                
                     // some block
                     sh """
-                    ${sonarscanner}/bin/sonar-scanner
-                
+                    ${sonarscanner}/bin/sonar-scanner -Dsonar.projectKey=${projectKey} \ 
+                    -Dsonar.projectName=${projectName} \ 
+                    -Dsonar.projectVersion=${projectVersion} \
+                    -Dsonar.sources=${sonarSources} \
+                    -Dsonar.language=${sonarLanguage} \ 
+                    -Dsonar.java.binaries=${sonarBinaries} \
+                    ${sonarCoverageformat}=${coverageReportsPath}\ 
+                    -Dsonar.c.file.suffixes=- \ 
+                    -Dsonar.cpp.file.suffixes=- \ 
+                    -Dsonar.objc.file.suffixes=- \
+                    -Dsonar.sourceEncoding=${sonarSourceEncoding} 
                     """
                 }
              }
           }
-        }*/
+        }
         
         /* stage('Quality gate') {
 
