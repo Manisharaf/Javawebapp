@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Run the maven build
-                sh 'mvn clean install'
+                sh 'mvn clean deploy'
                 
             }
         }
@@ -78,7 +78,7 @@ pipeline {
           }
         }
         
-        /* stage('Quality gate') {
+        stage('Quality gate') {
 
             steps {
 
@@ -104,14 +104,14 @@ pipeline {
 
             }
 
-        }*/
+        }
 
-        /* stage('Upload to Nexus') {
+        stage('Upload to Nexus') {
             steps {
                 // Deploy to Nexus
-               nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'EED_Engg-Excellence-Devops-POC_maven_releases', packages: []
+               nexusPublisher nexusInstanceId: 'nexusdev', nexusRepositoryId: 'maven_releases', packages: []
             }
-        }*/
+        }
     }
         /* post('Send Email') {
         failure {
