@@ -6,18 +6,22 @@ pipeline {
 
     // global env variables
 
-    /* environment {
+    environment {
 
-        EMAIL_RECIPIENTS = 'akshay.kg@bt.com'
+        pom = readMavenPom file: "pom.xml"
+                appVersion = "pom.version"
+                appPomGroupID =  "pom.groupId"
+                appGroupID = "appPomGroupID.toString().replace('.', '/')"
+                appName = "readMavenPom().getArtifactId()"
 
-    }*/
+    }
     
     stages {
-        
+     
         stage('Build') {
             steps {
-                // Run the maven build
-                sh 'mvn clean deploy'
+              // Run the maven build
+                sh 'mvn clean install'
                 
             }
         }
@@ -38,18 +42,18 @@ pipeline {
            }
         }
         
-        stage('Code Quality Check (Sonarqube)')
+       stage('Code Quality Check (Sonarqube)')
         {
             environment {
-                projectKey = 'Javawebapp'
-                projectName = 'Javawebapp'
-                projectVersion = '1.1'
-                sonarSources = 'src'
-                sonarLanguage = 'java'
-                sonarBinaries = 'target/classes'
-                sonarCoverageformat = '-Dsonar.coverage.jacoco.xmlReportPaths'
-                coverageReportsPath = 'target/jacoco.xml'
-                sonarSourceEncoding = 'UTF-8'                                     
+            projectKey = 'Javawebapp'
+            projectName = 'Javawebapp'
+            projectVersion = '1.1'
+            sonarSources = 'src'
+            sonarLanguage = 'java'
+            sonarBinaries = 'target/classes'
+            sonarCoverageformat = '-Dsonar.coverage.jacoco.xmlReportPaths'
+            coverageReportsPath = 'target/jacoco.xml'
+            sonarSourceEncoding = 'UTF-8'
             }
           steps
           {
@@ -66,19 +70,19 @@ pipeline {
                         -Dsonar.sources=${sonarSources} \
                         -Dsonar.language=${sonarLanguage} \
                         -Dsonar.java.binaries=${sonarBinaries} \
-                        ${sonarCoverageformat}=${coverageReportsPath} \
+                        ${sonarCoverageformat}=${coverageReportsPath}\
                         -Dsonar.c.file.suffixes=- \
                         -Dsonar.cpp.file.suffixes=- \
                         -Dsonar.objc.file.suffixes=- \
-                        -Dsonar.sourceEncoding=${sonarSourceEncoding} 
-                        
+                        -Dsonar.sourceEncoding=${sonarSourceEncoding}
+                
                     """
                 }
              }
           }
         }
         
-        stage('Quality gate') {
+       stage('Quality gate') {
 
             steps {
 
@@ -106,13 +110,14 @@ pipeline {
 
         }
 
-        stage('Upload to Nexus') {
+       stage('Upload to Nexus') {
             steps {
-                // Deploy to Nexus
-              nexusPublisher nexusInstanceId: 'nexus-dev', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'target/SimpleWebApplication.war']], mavenCoordinate: [artifactId: 'SimpleWebApplication', groupId: 'com.maven.bt', packaging: 'war', version: '9.1.14']]]
+                
+               nexusPublisher nexusInstanceId: 'nexus-dev', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'target/SimpleWebApplication.war']], mavenCoordinate: [artifactId: "${appname}", groupId: "${appPomGroupID}", packaging: 'war', version: "${appVersion}-${BUILD_NUMBER}"]]]
+            }
         }
     }
-        /* post('Send Email') {
+        /*post('Send Email') {
         failure {
             script {
                 mail (to: 'wasim.3.akram@bt.com',
@@ -126,8 +131,6 @@ pipeline {
                 mail (to: 'wasim.3.akram@bt.com', 
                         subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
                         body: "Please visit ${env.BUILD_URL} for further information.",
-
-
                   );
                 }
             }      
