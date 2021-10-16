@@ -2,6 +2,16 @@ pipeline {
     
     agent { label 'maven' }
     
+    environment {
+
+        pom = readMavenPom file: "pom.xml"
+                appVersion = "pom.version"
+                appPomGroupID =  "pom.groupId"
+                appGroupID = "appPomGroupID.toString().replace('.', '/')"
+                appName = "readMavenPom().getArtifactId()"
+
+    }
+    
     stages {
         
         stage('build') {
@@ -89,6 +99,15 @@ pipeline {
                 
             } 
             
+        }
+        
+        stage('Upload to Nexus') {
+            steps{
+                
+                nexusPublisher nexusInstanceId: 'nexusdev', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'target/SimpleWebApplication.war']], mavenCoordinate: [artifactId: "${appname}", groupId: "${appPomGroupID}", packaging: 'war', version: "${appVersion}-${BUILD_NUMBER}"]]]
+                
+            }
+        
         }
         
     }
