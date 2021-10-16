@@ -6,5 +6,12 @@ pipeline {
                 sh 'mvn clean install'            
             }
         }
+        stage('Unit Testing junit')
+        {
+            steps
+            {
+                junit 'target/surefire-reports/*.xml'
+            }
+        }
     }
 }
